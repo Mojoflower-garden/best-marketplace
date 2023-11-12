@@ -44,6 +44,7 @@ export const icrRouter = createTRPCRouter({
           {
             headers: {
               Authorization: `Bearer ${accessToken.token}`,
+              "x-icr-api-version": "2023-06-16",
             },
           },
         );
@@ -80,6 +81,7 @@ export const icrRouter = createTRPCRouter({
           {
             headers: {
               Authorization: `Bearer ${accessToken.token}`,
+              "x-icr-api-version": "2023-06-16",
             },
           },
         );
@@ -117,6 +119,7 @@ export const icrRouter = createTRPCRouter({
           {
             headers: {
               Authorization: `Bearer ${accessToken.token}`,
+              "x-icr-api-version": "2023-06-16",
             },
           },
         );
@@ -153,6 +156,7 @@ export const icrRouter = createTRPCRouter({
           {
             headers: {
               Authorization: `Bearer ${accessToken.token}`,
+              "x-icr-api-version": "2023-06-16",
             },
           },
         );
@@ -190,6 +194,7 @@ export const icrRouter = createTRPCRouter({
           {
             headers: {
               Authorization: `Bearer ${accessToken.token}`,
+              "x-icr-api-version": "2023-06-16",
             },
           },
         );
@@ -237,6 +242,7 @@ export const icrRouter = createTRPCRouter({
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
+              "x-icr-api-version": "2023-06-16",
             },
           },
         );
@@ -294,6 +300,7 @@ export const icrRouter = createTRPCRouter({
           {
             headers: {
               Authorization: `Bearer ${accessToken.token}`,
+              "x-icr-api-version": "2023-06-16",
             },
           },
         );
@@ -356,11 +363,14 @@ export const icrRouter = createTRPCRouter({
           {
             headers: {
               Authorization: `Bearer ${accessToken.token}`,
+              "x-icr-api-version": "2023-06-16",
             },
           },
         );
+        console.log("DONE REQUESTING CREDIT ACTION");
         return true;
       } catch (error: any) {
+        console.log("ERROR REQUESTING CREDIT ACTION");
         console.error(error);
         throw new TRPCError({
           code:
@@ -401,6 +411,7 @@ export const icrRouter = createTRPCRouter({
           {
             headers: {
               Authorization: `Bearer ${accessToken.token}`,
+              "x-icr-api-version": "2023-06-16",
             },
           },
         );
@@ -440,6 +451,7 @@ export const icrRouter = createTRPCRouter({
           {
             headers: {
               Authorization: `Bearer ${accessToken.token}`,
+              "x-icr-api-version": "2023-06-16",
             },
           },
         );

@@ -63,8 +63,14 @@ export default function Organization() {
     error: cancelError,
   } = api.icr.cancelReservation.useMutation();
 
+  const permissions = JSON.parse(organization?.permissions ?? "{}") as Record<
+    string,
+    string
+  >;
+  const keys = Object.keys(permissions);
+
   return (
-    <div>
+    <div className="px-10 py-5">
       <div className="mb-4 flex items-center">
         <>
           {isLoadingOrganization && (
@@ -79,7 +85,14 @@ export default function Organization() {
             alt="logo"
             className="mr-2 h-14 w-14 rounded-full"
           />
-          <div className="text-lg font-bold">{organization?.fullName}</div>
+          <div className="mr-3 text-lg font-bold">{organization?.fullName}</div>
+          <div className="text-xs">
+            {keys.map((key) => (
+              <div key={key} className="font-medium text-gray-500">
+                {key}: <span>{permissions[`${key}`]}</span>
+              </div>
+            ))}
+          </div>
         </>
         {orgError?.message}
       </div>

@@ -14,7 +14,7 @@ export const ConnectToICRButton = () => {
         <Link
           href={`${env.NEXT_PUBLIC_ICR_APP_URL}/apps/${env.NEXT_PUBLIC_ICR_NAME_ID}/installations/new?state=${stateVariable}&redirectUri=http://localhost:3001/api/icrCallback`}
         >
-          <Button>Connect to ICR</Button>
+          <Button className="">Connect to ICR</Button>
         </Link>
       )}
     </>

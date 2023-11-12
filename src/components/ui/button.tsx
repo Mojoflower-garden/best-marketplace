@@ -50,6 +50,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         {...props}
       >
+        {!props.isLoading && props.children}
         {props.isLoading && <Loader2 className="w-5 text-primary" />}
       </Comp>
     );

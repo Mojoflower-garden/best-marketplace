@@ -1,8 +1,10 @@
+import { organizations } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import axios from "axios";
+import { randomBytes } from "crypto";
 import { sign } from "jsonwebtoken";
 import { env } from "~/env.mjs";
-import { accessTokens, findOrganization, resetOrganizations } from "./db";
+import { db } from "~/server/db";
 
 interface CustomClaims {
   iss: string; // Issuer
@@ -31,7 +33,14 @@ export function createJWT(): string {
 }
 
 export const getInstallationAccessToken = async (organizationId: string) => {
-  let accessToken = accessTokens.find((token) => token.expiresAt > new Date());
+  let accessToken = await db.accessTokens.findFirst({
+    where: {
+      organizationId,
+      expiresAt: {
+        gt: new Date(),
+      },
+    },
+  });
   if (!accessToken) {
     const org = await getOrganization(organizationId);
     const jwt = createJWT();
@@ -50,9 +59,11 @@ export const getInstallationAccessToken = async (organizationId: string) => {
         expiresAt: new Date(data.expiresAt),
         token: data.token,
         organizationId,
-        installationId: org.installationId,
+        id: randomBytes(16).toString("hex"),
       };
-      accessTokens.push(accessToken);
+      await db.accessTokens.create({
+        data: accessToken,
+      });
     } catch (error: unknown) {
       const errorResponse: {
         response: {
@@ -81,16 +92,16 @@ export const getInstallationAccessToken = async (organizationId: string) => {
 };
 
 export const getOrganization = async (organizationId: string) => {
-  let organization = findOrganization(organizationId);
+  let organization = await db.organizations.findFirst({
+    where: {
+      id: organizationId,
+    },
+  });
   if (!organization) {
     const allInstallations = await getAllInstallations();
-    resetOrganizations(
-      allInstallations.map((installation) => ({
-        id: installation.organization.id,
-        installationId: installation.id,
-      })),
-    );
-    organization = findOrganization(organizationId);
+    organization = allInstallations.find(
+      (installation) => installation.organization.id === organizationId,
+    )?.organization as organizations;
     if (!organization)
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",

@@ -1,20 +1,15 @@
+import { organizations } from "@prisma/client";
 import axios from "axios";
 import { type NextApiRequest, type NextApiResponse } from "next";
 import { env } from "~/env.mjs";
+import { db } from "~/server/db";
 import { createJWT } from "~/utils/auth";
-import {
-  type IOrganization,
-  addOrganization,
-  validStateVariables,
-} from "~/utils/db";
 
 export default async function icrCallbackHandler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
   const { installationId, state, event } = req.query;
-
-  console.log("req.query", req.query);
   if (typeof installationId !== "string") {
     return res.redirect("/?error=invalid_installation_id");
   }
@@ -23,8 +18,13 @@ export default async function icrCallbackHandler(
     return res.redirect("/?error=invalid_state");
   }
 
-  // Verifying that the state variable is valid
-  if (!validStateVariables.find((stateVariable) => stateVariable === state)) {
+  const user = await db.user.findFirst({
+    where: {
+      id: state.split("-")[0], // This state should be a jwt or something that you generated when the user initiated the installation where you can identify the user. Note: it should probably not be the Id like in this example.
+    },
+  });
+
+  if (!user) {
     return res.redirect("/?error=invalid_state");
   }
 
@@ -41,12 +41,15 @@ export default async function icrCallbackHandler(
     const data = response.data;
     delete data.organization.organizationIndustries;
     delete data.organization.url;
-    const organization = data.organization as IOrganization;
+    const organization = data.organization as organizations;
 
-    addOrganization({
-      ...organization,
-      installationId: installationId,
-    }); // Here you should probably add the organization to your database and connect it to the user that initiated the installation
+    await db.organizations.create({
+      data: {
+        ...organization,
+        permissions: JSON.stringify(data.permissions),
+        installationId: installationId,
+      },
+    });
 
     res.redirect("/");
   } catch (error) {

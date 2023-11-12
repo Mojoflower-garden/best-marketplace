@@ -12,8 +12,9 @@ export default async function icrCallbackHandler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const { installationId, state } = req.query;
+  const { installationId, state, event } = req.query;
 
+  console.log("req.query", req.query);
   if (typeof installationId !== "string") {
     return res.redirect("/?error=invalid_installation_id");
   }

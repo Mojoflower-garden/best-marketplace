@@ -12,7 +12,11 @@ export const ConnectToICRButton = () => {
       {isLoadingStateVar && <Loader2 className="w-5" />}
       {!isLoadingStateVar && (
         <Link
-          href={`${env.NEXT_PUBLIC_ICR_APP_URL}/apps/${env.NEXT_PUBLIC_ICR_NAME_ID}/installations/new?state=${stateVariable}&redirectUri=http://localhost:3001/api/icrCallback`}
+          href={`${env.NEXT_PUBLIC_ICR_APP_URL}/apps/${
+            env.NEXT_PUBLIC_ICR_NAME_ID
+          }/installations/new?state=${stateVariable}&redirectUri=http://localhost:${
+            process.env.PORT ?? "3000"
+          }/api/icrCallback`}
         >
           <Button className="">Connect to ICR</Button>
         </Link>

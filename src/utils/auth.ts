@@ -33,14 +33,15 @@ export function createJWT(): string {
 }
 
 export const getInstallationAccessToken = async (organizationId: string) => {
-  let accessToken = await db.accessTokens.findFirst({
-    where: {
-      organizationId,
-      expiresAt: {
-        gt: new Date(),
-      },
-    },
-  });
+  // let accessToken = await db.accessTokens.findFirst({
+  //   where: {
+  //     organizationId,
+  //     expiresAt: {
+  //       gt: new Date(),
+  //     },
+  //   },
+  // });
+  let accessToken = null;
   if (!accessToken) {
     const org = await getOrganization(organizationId);
     const jwt = createJWT();

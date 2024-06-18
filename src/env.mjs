@@ -10,7 +10,7 @@ export const env = createEnv({
     NODE_ENV: z.enum(["development", "test", "production"]),
     ICR_PRIVATE_KEY: z.string(),
     ICR_WEBHOOK_SECRET: z.string().optional(),
-    ICR_API_URL:z.string(),
+    ICR_API_URL: z.string(),
   },
 
   /**
@@ -21,7 +21,7 @@ export const env = createEnv({
   client: {
     NEXT_PUBLIC_ICR_APP_ID: z.string(),
     NEXT_PUBLIC_ICR_NAME_ID: z.string(),
-    NEXT_PUBLIC_ICR_APP_URL:z.string()
+    NEXT_PUBLIC_ICR_APP_URL: z.string(),
   },
 
   /**
@@ -30,12 +30,14 @@ export const env = createEnv({
    */
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
-    ICR_API_URL: "https://gaia-api-dev.mojoflower.io",
+    ICR_API_URL: "https://sandbox-api.carbonregistry.com",
+    // ICR_API_URL: "http://localhost:3000",
     ICR_PRIVATE_KEY: process.env.ICR_PRIVATE_KEY,
     ICR_WEBHOOK_SECRET: process.env.ICR_WEBHOOK_SECRET,
     NEXT_PUBLIC_ICR_APP_ID: process.env.NEXT_PUBLIC_ICR_APP_ID,
     NEXT_PUBLIC_ICR_NAME_ID: process.env.NEXT_PUBLIC_ICR_NAME_ID,
-    NEXT_PUBLIC_ICR_APP_URL: "https://sandbox.carbonregistry.com"
+    NEXT_PUBLIC_ICR_APP_URL: "https://sandbox-app.carbonregistry.com",
+    // NEXT_PUBLIC_ICR_APP_URL: "http://localhost:4600",
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
